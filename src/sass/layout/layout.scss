@@ -14,14 +14,18 @@ main {
     flex: 1;
     min-height: 100%;
     max-width: 1240px;
-    width: 30%;
     margin: 0 auto;
     text-align: center;
     padding: 4em;
+}
+
+.form-main {
     min-width: 500px;
+    width: 30%;
 }
 
 .main-page-text {
+    box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.45);
     padding: 2em;
     background-color: rgb(255, 255, 255);
     border-radius: 16px;
@@ -39,6 +43,7 @@ main {
 }
 
 @media screen and (max-width: 768px) {
+    .form-main,
     main {
         width: 80%;
         min-width: 0;
@@ -47,6 +52,7 @@ main {
 }
 
 @media screen and (max-width: 475px) {
+    .form-main,
     main {
         width: 100%;
         padding: 0.5em;
