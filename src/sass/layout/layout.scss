@@ -16,9 +16,13 @@ main {
     max-width: 1240px;
     margin: 0 auto;
     text-align: center;
+    padding: 4em;
 }
 
 .main-page-text {
+    padding: 2em;
+    background-color: rgb(255, 255, 255);
+    border-radius: 16px;
     p {
         text-align: left;
         max-width: 60ch;
