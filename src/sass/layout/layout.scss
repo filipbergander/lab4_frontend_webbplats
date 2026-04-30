@@ -14,9 +14,11 @@ main {
     flex: 1;
     min-height: 100%;
     max-width: 1240px;
+    width: 30%;
     margin: 0 auto;
     text-align: center;
     padding: 4em;
+    min-width: 500px;
 }
 
 .main-page-text {
@@ -36,6 +38,17 @@ main {
     }
 }
 
-@media screen and (max-width: 380px) {}
+@media screen and (max-width: 768px) {
+    main {
+        width: 80%;
+        min-width: 0;
+        padding: 2em;
+    }
+}
 
-@media screen and (max-width: 310px) {}
+@media screen and (max-width: 475px) {
+    main {
+        width: 100%;
+        padding: 0.5em;
+    }
+}

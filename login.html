@@ -32,22 +32,25 @@
         <h1>Inloggning till webbplatsen</h1>
         <form id="login-user-form" method="post">
             <legend>Logga in</legend>
-            <div id="error-message"></div>
+            <div class="error-message">
+                <ul></ul>
+            </div>
             <div class="input-area">
-                <label for="username">Användarnamn</label>
-                <input type="text" id="username" name="username" placeholder="Skriv användarnamn">
+                <label for="login-username">Användarnamn</label>
+                <input type="text" id="login-username" name="username" placeholder="Skriv användarnamn">
             </div>
 
             <div class="input-area">
-                <label for="email">Din email</label>
-                <input type="text" id="email" name="email" placeholder="Skriv email">
+                <label for="login-email">Din email</label>
+                <input type="email" id="login-email" name="email" placeholder="Skriv email">
             </div>
 
             <div class="input-area">
-                <label for="password">Lösenord</label>
-                <input type="password" id="password" name="password" placeholder="Skriv lösenord">
+                <label for="login-password">Lösenord</label>
+                <input type="password" id="login-password" name="password" placeholder="Skriv lösenord">
             </div>
-            <button id="login-user-btn" type="submit">Enter<span id="login-user-icon" class="material-symbols-outlined">login</span></button>
+            <button id="login-user-btn" type="submit">Enter<span id="login-user-icon"
+                    class="material-symbols-outlined">login</span></button>
         </form>
     </main>
     <footer>Lab 4.2 Backend | Filip 2026</footer>

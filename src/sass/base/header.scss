@@ -80,49 +80,10 @@ a {
     header {
         padding: 0rem;
         ul {
-            gap: 0.3em;
+            gap: 0.1em;
         }
         a {
             font-size: 0.8rem;
         }
     }
 }
-
-
-/*
-header {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0 auto;
-    height: 80px;
-    width: 100%;
-    background-color: aquamarine;
-    nav {
-        height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        background-color: #272832;
-    }
-    ul {
-        display: flex;
-        justify-content: center;
-        gap: 2em;
-        list-style: none;
-        background-color: black;
-    }
-    li {
-        height: 100%;
-        display: flex;
-    }
-    a {
-        height: 100%;
-        flex: 1;
-        padding: 1em;
-        color: white;
-        text-transform: uppercase;
-        text-decoration: none;
-    }
-}
-*/
