@@ -1,0 +1,23 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+    min-height: 100%;
+    max-width: 1240px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+@media screen and (max-width: 380px) {}
+
+@media screen and (max-width: 310px) {}

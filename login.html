@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="sv">
+
+<head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lab 4 | Webbplats (Backend)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=person_add" />
+
+</head>
+
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li>
+                    <a href="/">Hem</a>
+                </li>
+                <li><a href="login.html">Inloggning</a></li>
+                <li><a href="register.html">Registrera</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <h1>Inloggning till webbplatsen</h1>
+        <form id="add-user-form" method="post">
+            <legend>Logga in</legend>
+            <div id="error-message"></div>
+            <div>
+                <label for="username">Användarnamn</label>
+                <input type="text" id="username" name="username" placeholder="Skriv användarnamn">
+            </div>
+
+            <div>
+                <label for="email">Din email</label>
+                <input type="text" id="email" name="email" placeholder="Skriv email">
+            </div>
+
+            <div>
+                <label for="password">Lösenord</label>
+                <input type="password" id="password" name="password" placeholder="Skriv lösenord">
+            </div>
+            <button id="add-user-btn" type="submit">Lägg till användare<span id="add-user-icon" class="material-symbols-outlined">
+person_add
+</span></button>
+        </form>
+    </main>
+    <footer>Lab 4.2 Backend | Filip</footer>
+    <script type="module" src="/src/js/main.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,17 @@
+body {
+    font-family: "Manrope", sans-serif;
+    background-color: #f0ba2444;
+}
+
+h1 {
+    font-size: 1.8em;
+    margin-top: 0.5em;
+}
+
+@media screen and (max-width: 450px) {
+    h1 {
+        font-size: 1.5em;
+    }
+}
+
+@media screen and (max-width: 320px) {}

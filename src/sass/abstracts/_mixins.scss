@@ -1,0 +1,18 @@
+@use "variables" as *;
+@mixin button($btn-color-primary, $color-text) {
+    color: $color-text;
+    background-color: $btn-color-primary;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 0.5em 0.75em;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    border: none;
+    &:hover {
+        background-color: #03771c;
+    }
+    &:active {
+        background-color: white;
+    }
+}
