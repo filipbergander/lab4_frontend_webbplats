@@ -1,0 +1,35 @@
+#login-user-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 0 auto;
+    background-color: rgb(166, 226, 2);
+    padding: 1.5em;
+    border-radius: 16px;
+    gap: 1em;
+    margin-top: 2em;
+    .input-area {
+        display: flex;
+        flex-direction: column;
+        text-align: left;
+    }
+    legend {
+        font-weight: 600;
+        font-size: 1.4em;
+    }
+    input {
+        padding: 0.5em;
+        border-radius: 4px;
+        border: 0.5px solid rgb(235, 15, 125);
+    }
+}
+
+#add-user-form {
+    @extend #login-user-form;
+    background-color: rgb(219, 170, 8);
+    input {
+        padding: 0.5em;
+        border-radius: 4px;
+        border: 0.5px solid rgb(5, 116, 29);
+    }
+}

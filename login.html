@@ -25,24 +25,24 @@
     </header>
     <main>
         <h1>Inloggning till webbplatsen</h1>
-        <form id="add-user-form" method="post">
+        <form id="login-user-form" method="post">
             <legend>Logga in</legend>
             <div id="error-message"></div>
-            <div>
+            <div class="input-area">
                 <label for="username">Användarnamn</label>
                 <input type="text" id="username" name="username" placeholder="Skriv användarnamn">
             </div>
 
-            <div>
+            <div class="input-area">
                 <label for="email">Din email</label>
                 <input type="text" id="email" name="email" placeholder="Skriv email">
             </div>
 
-            <div>
+            <div class="input-area">
                 <label for="password">Lösenord</label>
                 <input type="password" id="password" name="password" placeholder="Skriv lösenord">
             </div>
-            <button id="add-user-btn" type="submit">Lägg till användare<span id="add-user-icon" class="material-symbols-outlined">
+            <button id="login-user-btn" type="submit">Enter<span id="login-user-icon" class="material-symbols-outlined">
 person_add
 </span></button>
         </form>

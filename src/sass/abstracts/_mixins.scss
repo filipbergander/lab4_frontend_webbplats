@@ -9,6 +9,8 @@
     display: flex;
     align-items: center;
     border: none;
+    justify-content: center;
+    transition: 0.3s ease;
     &:hover {
         background-color: #03771c;
     }
