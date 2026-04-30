@@ -7,7 +7,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Lab 4 | Webbplats (Backend)</title>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700&display=swap" rel="stylesheet">
-
+    <link rel="icon" type="image/png" href="/public/favicon/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/svg+xml" href="/public/favicon/favicon.svg">
+    <link rel="shortcut icon" href="/public/favicon/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="/public/favicon/apple-touch-icon.png">
+    <meta name="apple-mobile-web-app-title" content="MyWebSite">
+    <link rel="manifest" href="/public/favicon/site.webmanifest">
 </head>
 
 <body>
@@ -15,7 +20,7 @@
         <nav>
             <ul>
                 <li>
-                    <a href="/">Hem</a>
+                    <a class="current-page" href="/">Hem</a>
                 </li>
                 <li><a href="login.html">Inloggning</a></li>
                 <li><a href="register.html">Registrera</a></li>
@@ -23,9 +28,23 @@
         </nav>
     </header>
     <main>
-        <h1>Välkommen webbplatsen</h1>
+        <div class="main-page-text">
+            <h1>Välkommen till webbplatsen</h1>
+            <p>På denna webbplats är det möjligt att skapa en ny användare samt logga in användare.</p>
+            <br>
+            <p>Sidor som finns:</p>
+            <ul>
+                <li>Inloggning - Här loggar en redan befintlig användare in.</li>
+                <li>Registrera - Här skapar man en ny användare.</li>
+            </ul>
+            <br>
+            <p>Utökad funktionalitet finns tillgängligt för användare som är inloggade.</p>
+            <br>
+            <p>Webbplatsen är ansluten mot en databas i MongoDB och ingår som ett delmoment i uppgift 4 i Backend-baserad webbutveckling på Mittuniversitet.</p><br>
+            <p>Jag valde MongoDB i denna uppgift i stället för en relationsdatabas. Jag tycker om gränssnittet som finns inom MongoDB Atlas och känner att det är ett ypperligt verktyg för att lära mig mer om databaser.</p>
+        </div>
     </main>
-    <footer>Lab 4.2 Backend | Filip</footer>
+    <footer>Lab 4.2 Backend | Filip 2026</footer>
     <script type="module" src="/src/js/main.js"></script>
 </body>
 

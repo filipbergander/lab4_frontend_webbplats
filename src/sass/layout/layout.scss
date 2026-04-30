@@ -18,6 +18,20 @@ main {
     text-align: center;
 }
 
+.main-page-text {
+    p {
+        text-align: left;
+        max-width: 60ch;
+        line-height: 1.4;
+    }
+    ul {
+        list-style-position: inside;
+    }
+    li {
+        text-align: left;
+    }
+}
+
 @media screen and (max-width: 380px) {}
 
 @media screen and (max-width: 310px) {}

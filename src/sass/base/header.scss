@@ -55,6 +55,15 @@ a {
     }
 }
 
+.current-page {
+    color: #4ade80;
+    &::after {
+        width: 100%;
+        left: 0;
+        background-color: #4ade80;
+    }
+}
+
 @media screen and (max-width: 380px) {
     header {
         padding: 0.5rem;
