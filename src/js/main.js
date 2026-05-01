@@ -70,6 +70,8 @@ document.addEventListener("DOMContentLoaded", () => {
             if (errors.length > 0) {
                 displayErrorMsg(errors);
                 return; // Stoppar formuläret från att bli submittat
+            } else {
+                loginUser(); // Loggar in användaren genom funktionen
             }
         });
     }
@@ -83,6 +85,15 @@ function displayErrorMsg(errors) {
         liEl.textContent = error; // Tillger li-elementet texten som genererats inom arrayen av errors
         errorMsgList.appendChild(liEl); // Lägger till li-elementet inom felmeddelande-listan
     });
+}
+
+// Funktion för att visa inloggning fungerade i DOM
+function displaySuccessMsg(successMsg) {
+    const successMsgList = document.querySelector(".success-message ul");
+    successMsgList.innerHTML = "";
+    const liEl = document.createElement("li");
+    liEl.textContent = successMsg;
+    successMsgList.appendChild(liEl);
 }
 
 async function getStartMsg() {
@@ -133,17 +144,43 @@ async function loginUser() {
     const email = document.getElementById("login-email").value.trim();
     const password = document.getElementById("login-password").value.trim();
     const username = document.getElementById("login-username").value.trim();
+    const errorMsgList = document.querySelector(".error-message ul");
+    const successMsgList = document.querySelector(".success-message ul");
+    successMsgList.innerHTML = ""; // Tar bort tidigare inloggningsmeddelanden
+    let errors = [];
+    let successMsg = [];
     try {
-        const response = await fetch(`$(url)ap/login`, {
+        const response = await fetch(`${url}api/login`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({ username, email, password })
         });
-        const data = await response.json();
-        console.log("Användare inloggad: ", data);
+        if (!response.ok) {
+            throw new Error("Kunde inte logga in användaren...");
+            return;
+        }
+        const data = await response.json(); // Väntar på responsen tillbaka
+        console.log("Användare inloggad: ", data); // Felhantering
+        const token = data.response.token; // Token utifrån data
+        localStorage.setItem("nyckel", token); // Sparar token i localstorage
+        errorMsgList.innerHTML = ""; // Raderar eventuella felmeddelanden från tidigare försök
+
+        // Visar ett felmeddelande i DOM vid lyckad inloggning
+        successMsg.push("Inloggning lyckades!") // Meddelande i DOM att inloggningen gick bra
+        displaySuccessMsg(successMsg); // Visar att inloggningen lyckades i DOM
+
+        // Liten delay innan redirect för att hinna spara token i localstorage
+        setTimeout(() => {
+            window.location.href = "protected.html";
+        }, 1000);
     } catch (error) {
         console.error("Kunde inte logga in användaren: ", error);
+        // Felmeddelanden i DOM
+        errors.push("Kunde inte logga in...");
+        errors.push("Fel email, lösenord eller användarnamn!");
+        displayErrorMsg(errors); // Visar felmeddelanden
+        return; // Kör inte vidare med inloggningen
     }
 }
