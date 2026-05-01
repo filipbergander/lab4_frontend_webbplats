@@ -1,0 +1,29 @@
+@use '../abstracts/animations';
+.error-message {
+    color: rgb(221, 4, 4);
+    font-weight: bold;
+    li {
+        list-style-position: inside;
+        text-align: left;
+    }
+}
+
+.success-message {
+    @extend .error-message;
+    color: blue;
+}
+
+.loading-spinner {
+    display: block;
+    border: 4px solid rgb(255, 255, 255);
+    border-bottom: solid 4px rgb(0, 17, 255);
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    animation: rotateSpin 1.5s linear infinite;
+    margin: 0 auto;
+}
+
+.hidden {
+    display: none;
+}

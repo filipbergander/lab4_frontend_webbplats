@@ -9,11 +9,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     getStartMsg();
 
-    // Formuläret med inputs & knapp för att logga in en användare
+    // Formuläret med knapp & laddningsikon för att logga in en användare
     const loginForm = document.getElementById("login-user-form");
     const loginBtn = document.getElementById("login-user-btn");
 
-    // Formuläret med inputs & knapp för att registrera en ny användare
+    // Formuläret med knapp för att registrera en ny användare
     const registerForm = document.getElementById("add-user-form");
     const registerBtn = document.getElementById("add-user-btn");
 
@@ -43,7 +43,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 return; // Stoppar formuläret från att bli submittat
             } else { // Annars om inga felmeddelanden finns, anropas createUser
                 createUser();
-                window.location.href = "login.html"; // Skickar användaren till inloggningssidan
             }
         });
     }
@@ -87,8 +86,18 @@ function displayErrorMsg(errors) {
     });
 }
 
+function showError(err) {
+    const errorMsgList = document.querySelector(".error-message ul");
+    errorMsgList.innerHTML = "";
+    const li = document.createElement("li");
+    li.textContent = err;
+    errorMsgList.appendChild(li);
+}
+
 // Funktion för att visa inloggning fungerade i DOM
 function displaySuccessMsg(successMsg) {
+
+    //Lyckas success med meddelande inom DOM
     const successMsgList = document.querySelector(".success-message ul");
     successMsgList.innerHTML = "";
     const liEl = document.createElement("li");
@@ -115,12 +124,19 @@ async function getStartMsg() {
         console.error("Gick inte att hämta data från webbtjänsten: ", error)
     }
 }
-
-
+// För att skapa en ny användare
 async function createUser() {
+    // Inputs inom formuläret 
     const email = document.getElementById("register-email").value.trim();
     const password = document.getElementById("register-password").value.trim();
     const username = document.getElementById("register-username").value.trim();
+
+    const errorMsgList = document.querySelector(".error-message ul"); // Felmeddelanden
+    const successMsgList = document.querySelector(".success-message ul"); // Meddelanden vid lyckat resultat
+    successMsgList.innerHTML = ""; // Tar bort tidigare inloggningsmeddelanden
+
+    let errors = [];
+    let successMsg = [];
     try {
         const response = await fetch(`${url}api/register`, {
             method: "POST",
@@ -129,26 +145,44 @@ async function createUser() {
             },
             body: JSON.stringify({ username, email, password })
         });
+        const data = await response.json();
+        // Vid misslyckat resultat
         if (!response.ok) {
+            document.querySelector(".loading-spinner").classList.add("hidden"); // Visasr ingen laddningsikon
+            showError(data.error); // Visar felmeddelanden från backend, ex upptagna användarnamn/email
             throw new Error(`Kunde inte hämta webbtjänsten...`);
             return;
         }
-        const data = await response.json();
+        // Vid lyckat resultat
+        document.querySelector(".loading-spinner").classList.remove("hidden"); // Tar bort hidden för att visa laddningsikonen
         console.log("Ny användare skapad: ", data);
+        errorMsgList.innerHTML = ""; // Raderar eventuella felmeddelanden från tidigare försök
+        successMsg.push("Ny användare skapas!") // Meddelande i DOM att inloggningen gick bra
+        displaySuccessMsg(successMsg); // Visar att inloggningen lyckades i DOM
+        setTimeout(() => {
+            document.querySelector(".loading-spinner").classList.add("hidden"); // Döljer ikonen
+            successMsgList.innerHTML = "";
+            window.location.href = "login.html"; // Skickar användaren till inloggningssidan
+        }, 1000);
     } catch (error) {
+        document.querySelector(".loading-spinner").classList.add("hidden");
         console.error("Kunde inte skapa en ny användare: ", error);
     }
 }
-
+// För att logga in en användare
 async function loginUser() {
+    // Inputs inom formuläret
     const email = document.getElementById("login-email").value.trim();
     const password = document.getElementById("login-password").value.trim();
     const username = document.getElementById("login-username").value.trim();
-    const errorMsgList = document.querySelector(".error-message ul");
-    const successMsgList = document.querySelector(".success-message ul");
+
+    const errorMsgList = document.querySelector(".error-message ul"); // Felmeddelanden
+    const successMsgList = document.querySelector(".success-message ul"); // Meddelanden vid lyckat resultat
     successMsgList.innerHTML = ""; // Tar bort tidigare inloggningsmeddelanden
     let errors = [];
     let successMsg = [];
+
+    localStorage.removeItem("nyckel"); // Tar bort tidigare nyckel om det redan finns lagrat
     try {
         const response = await fetch(`${url}api/login`, {
             method: "POST",
@@ -157,22 +191,27 @@ async function loginUser() {
             },
             body: JSON.stringify({ username, email, password })
         });
-        if (!response.ok) {
+
+        const data = await response.json(); // Väntar på responsen tillbaka
+        const token = data.response.token; // Token utifrån data
+        // Om token inte finns inom responsen så går inte inloggningen igenom
+        if (!response.ok || !token) {
+            document.querySelector(".loading-spinner").classList.add("hidden"); // Döljer ikonen vid misslyckad respons
             throw new Error("Kunde inte logga in användaren...");
             return;
         }
-        const data = await response.json(); // Väntar på responsen tillbaka
         console.log("Användare inloggad: ", data); // Felhantering
-        const token = data.response.token; // Token utifrån data
         localStorage.setItem("nyckel", token); // Sparar token i localstorage
         errorMsgList.innerHTML = ""; // Raderar eventuella felmeddelanden från tidigare försök
-
+        document.querySelector(".loading-spinner").classList.remove("hidden"); // Tar bort hidden för att visa laddningsikonen
         // Visar ett felmeddelande i DOM vid lyckad inloggning
         successMsg.push("Inloggning lyckades!") // Meddelande i DOM att inloggningen gick bra
         displaySuccessMsg(successMsg); // Visar att inloggningen lyckades i DOM
 
-        // Liten delay innan redirect för att hinna spara token i localstorage
+        // Liten delay innan redirect för att hinna spara token i localstorage och visa laddningsikon en kort stund
         setTimeout(() => {
+            document.querySelector(".loading-spinner").classList.add("hidden"); // Döljer ikonen efter redirect
+            successMsgList.innerHTML = "";
             window.location.href = "protected.html";
         }, 1000);
     } catch (error) {
