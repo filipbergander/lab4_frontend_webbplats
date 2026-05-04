@@ -15,6 +15,13 @@
     }
 }
 
+#add-news-btn {
+    @include button($btn-color-news, $color-text);
+    &:hover {
+        background-color: rgba(255, 238, 0, 0.534);
+    }
+}
+
 #login-user-icon {
     height: 20px;
     width: 20px;

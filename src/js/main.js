@@ -1,6 +1,7 @@
 "use strict";
 
 import '../sass/main.scss';
+import { checkAuthAccess } from "./authentication/checkAuth.js";
 
 // Global URL till webbtjänsten i backend
 export const url = "http://localhost:3000/";
@@ -12,13 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
     getStartMsg();
     changeLoginMenu();
     addPageHighlight()
-
-    // Går inte att navigera till admin-sidan om användaren inte är inloggad
-    if (window.location.pathname.endsWith("admin.html") && !localStorage.getItem("nyckel")) {
-        window.location.href = "login.html"; // Redirect till login-sidan
-    };
-
-    // Formuläret med knapp & laddningsikon för att logga in en användare
+        // Formuläret med knapp & laddningsikon för att logga in en användare
     const loginForm = document.getElementById("login-user-form");
     const loginBtn = document.getElementById("login-user-btn");
 
