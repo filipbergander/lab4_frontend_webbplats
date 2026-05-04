@@ -57,7 +57,7 @@ document.addEventListener("DOMContentLoaded", () => {
             // Hämtar värden inom inloggningsformuläret
             const loginEmail = document.getElementById("login-email").value.trim();
             const loginPassword = document.getElementById("login-password").value.trim();
-            const loginUsername = document.getElementById("login-username").value.trim();
+            // const loginUsername = document.getElementById("login-username").value.trim();
 
             // Specifika felmeddelande för inputs
             if (loginEmail === "") errors.push("Du måste fylla i email!");
@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
             } else if (loginPassword.length < 6) {
                 errors.push("Lösenordet måste vara minst 6 tecken!");
             }
-            if (loginUsername === "") errors.push("Du måste fylla i användarnamn!");
+            //if (loginUsername === "") errors.push("Du måste fylla i användarnamn!");
             // Om felmeddelanden finns visas dem genom funktionen displayErrorMsg
             if (errors.length > 0) {
                 displayErrorMsg(errors);
@@ -171,7 +171,7 @@ async function loginUser() {
     // Inputs inom formuläret
     const email = document.getElementById("login-email").value.trim();
     const password = document.getElementById("login-password").value.trim();
-    const username = document.getElementById("login-username").value.trim();
+    //const username = document.getElementById("login-username").value.trim();
 
     const errorMsgList = document.querySelector(".error-message ul"); // Felmeddelanden
     const successMsgList = document.querySelector(".success-message ul"); // Meddelanden vid lyckat resultat
@@ -186,7 +186,7 @@ async function loginUser() {
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({ username, email, password })
+            body: JSON.stringify({ email, password })
         });
 
         const data = await response.json(); // Väntar på responsen tillbaka
