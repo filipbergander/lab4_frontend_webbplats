@@ -1,3 +1,5 @@
+"use strict";
+
 import '../sass/main.scss';
 
 // Global URL till webbtjänsten i backend
@@ -8,7 +10,7 @@ const responsePrint = document.querySelector(".response-text");
 document.addEventListener("DOMContentLoaded", () => {
 
     getStartMsg();
-
+    changeLoginMenu();
     // Formuläret med knapp & laddningsikon för att logga in en användare
     const loginForm = document.getElementById("login-user-form");
     const loginBtn = document.getElementById("login-user-btn");
@@ -110,14 +112,9 @@ async function getStartMsg() {
         const response = await fetch(`${url}`, {
             method: "GET"
         });
-
+        const data = await response.json();
         if (!response.ok) {
             throw new Error(`Kunde inte hämta webbtjänsten...`);
-        }
-        const data = await response.json();
-        // Provar skriva ut välkomstmeddelandet på webbplatsen
-        if (responsePrint) {
-            responsePrint.innerHTML = JSON.stringify(data);
         }
         console.log("Respons från webbtjänst: ", data);
     } catch (error) {
@@ -221,5 +218,31 @@ async function loginUser() {
         errors.push("Fel email, lösenord eller användarnamn!");
         displayErrorMsg(errors); // Visar felmeddelanden
         return; // Kör inte vidare med inloggningen
+    }
+}
+
+const menu = document.querySelector(".menu-list");
+
+function changeLoginMenu() {
+    if (localStorage.getItem("nyckel")) {
+        menu.innerHTML = `
+        <li><a class="current-page" href="/">Hem</a></li>
+        <li><button id="logout-button">Logga ut</button></li>
+        <li><a href="register.html">Registrera</a></li>
+        `
+    } else if (!localStorage.getItem("nyckel")) {
+        menu.innerHTML = `
+        <li><a href="/">Hem</a></li>
+        <li><a href="login.html">Inloggning</a></li>
+        `
+    }
+
+    const logoutBtn = document.getElementById("logout-button");
+
+    if (logoutBtn) {
+        logoutBtn.addEventListener("click", () => {
+            localStorage.removeItem("nyckel");
+            window.location.href = "login.html";
+        });
     }
 }
