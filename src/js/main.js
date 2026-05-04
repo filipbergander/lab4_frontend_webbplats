@@ -5,13 +5,14 @@ import '../sass/main.scss';
 // Global URL till webbtjänsten i backend
 export const url = "http://localhost:3000/";
 
-const responsePrint = document.querySelector(".response-text");
+const menu = document.querySelector(".menu-list");
 
 document.addEventListener("DOMContentLoaded", () => {
 
     getStartMsg();
     changeLoginMenu();
-    // Formuläret med knapp & laddningsikon för att logga in en användare
+    addPageHighlight()
+        // Formuläret med knapp & laddningsikon för att logga in en användare
     const loginForm = document.getElementById("login-user-form");
     const loginBtn = document.getElementById("login-user-btn");
 
@@ -88,6 +89,7 @@ function displayErrorMsg(errors) {
     });
 }
 
+// Skapar och visar felmeddelanden som finns i backend(API), till frontend i DOM
 function showError(err) {
     const errorMsgList = document.querySelector(".error-message ul");
     errorMsgList.innerHTML = "";
@@ -106,7 +108,7 @@ function displaySuccessMsg(successMsg) {
     liEl.textContent = successMsg;
     successMsgList.appendChild(liEl);
 }
-
+// För att visa ett startmeddelande om det gick att hämta in webbtjänsten
 async function getStartMsg() {
     try {
         const response = await fetch(`${url}`, {
@@ -209,7 +211,7 @@ async function loginUser() {
         setTimeout(() => {
             document.querySelector(".loading-spinner").classList.add("hidden"); // Döljer ikonen efter redirect
             successMsgList.innerHTML = "";
-            window.location.href = "protected.html";
+            window.location.href = "admin.html";
         }, 1000);
     } catch (error) {
         console.error("Kunde inte logga in användaren: ", error);
@@ -220,29 +222,45 @@ async function loginUser() {
         return; // Kör inte vidare med inloggningen
     }
 }
-
-const menu = document.querySelector(".menu-list");
-
+// För att switcha navigeringsmenyn beroende på om man är inloggad eller inte
 function changeLoginMenu() {
+    // Om man är inloggad
     if (localStorage.getItem("nyckel")) {
         menu.innerHTML = `
-        <li><a class="current-page" href="/">Hem</a></li>
+        <li><a href="index.html">Hem</a></li>
+        <li><a href="admin.html">Inlägg</a></li>
         <li><button id="logout-button">Logga ut</button></li>
-        <li><a href="register.html">Registrera</a></li>
         `
+            // Om man inte är inloggad
     } else if (!localStorage.getItem("nyckel")) {
         menu.innerHTML = `
-        <li><a href="/">Hem</a></li>
-        <li><a href="login.html">Inloggning</a></li>
+        <li><a href="index.html">Hem</a></li>
+        <li><a href="login.html">Logga in</a></li>
+        <li><a href="register.html">Registrera</a></li>
         `
     }
-
+    // Logga ut knapp
     const logoutBtn = document.getElementById("logout-button");
-
+    // Om knappen finns tillgänglig -> om användaren är inloggad
     if (logoutBtn) {
         logoutBtn.addEventListener("click", () => {
-            localStorage.removeItem("nyckel");
-            window.location.href = "login.html";
+            localStorage.removeItem("nyckel"); // Tar bort key från localstorage
+            window.location.href = "login.html"; // Navigerar användaren till login-sidan
         });
     }
+}
+// Lägger på klassen current-page på aktuell sida för användaren, för att kunna styla
+function addPageHighlight() {
+    // Vilken sida som användare är på, hämtar in filnamnet och tar bort /, vid tom sträng används index.html annars aktuell sida t.ex login.html
+    const currentLocation = window.location.pathname.split("/").pop() || "index.html";
+    const navLinks = document.querySelectorAll(".menu-list a"); // Hämtar in alla länkar som finns i huvudmenyn
+    // Loop
+    navLinks.forEach(link => {
+        const linkLocation = link.getAttribute("href").split("/").pop() || "index.html"; //Hämtar in motsvarande href-värde från aktuell länk
+
+        // Om länkens filnamn matchar med href-värdet
+        if (currentLocation === linkLocation) {
+            link.classList.add("current-page"); // Lägger på klassen inom länken
+        }
+    });
 }

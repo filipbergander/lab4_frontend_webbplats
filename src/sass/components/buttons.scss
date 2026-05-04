@@ -24,3 +24,28 @@
     height: 20px;
     width: 20px;
 }
+
+#logout-button {
+    font-family: "Manrope", sans-serif;
+    font-weight: bold;
+    cursor: pointer;
+    background-color: #02f8d7ef;
+    padding: 0.4em;
+    border-radius: 6px;
+    transition: 0.3s ease;
+    &:hover {
+        background-color: #fa8e00;
+    }
+}
+
+@media screen and (max-width: 380px) {
+    #logout-button {
+        font-size: 0.9em;
+    }
+}
+
+@media screen and (max-width: 310px) {
+    #logout-button {
+        font-size: 0.8em;
+    }
+}
