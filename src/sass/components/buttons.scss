@@ -4,7 +4,6 @@
     @include button($btn-color-secondary, $color-text-light);
     &:hover {
         background-color: #4f9905e3;
-        ;
     }
 }
 
@@ -40,6 +39,14 @@
     padding: 0.4em;
     border-radius: 6px;
     transition: 0.3s ease;
+    &:hover {
+        background-color: #fa8e00;
+    }
+}
+
+.delete-btn {
+    @include button($btn-color-red, $color-text);
+    margin-left: auto;
     &:hover {
         background-color: #fa8e00;
     }

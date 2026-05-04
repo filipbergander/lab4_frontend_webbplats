@@ -9,14 +9,45 @@ export const url = "http://localhost:3000/";
 const menu = document.querySelector(".menu-list");
 
 document.addEventListener("DOMContentLoaded", () => {
-
-    getStartMsg();
+    fetchNews();
     changeLoginMenu();
-    addPageHighlight()
-        // Formuläret med knapp & laddningsikon för att logga in en användare
-    const loginForm = document.getElementById("login-user-form");
-    const loginBtn = document.getElementById("login-user-btn");
+    addPageHighlight();
+    initRegisterForm();
+    initLoginForm();
+    initNewsForm();
+});
+// Funktion som skriver ut felmeddelanden i DOM
+function displayErrorMsg(errors) {
+    const errorMsgList = document.querySelector(".error-message ul");
+    errorMsgList.innerHTML = "";
+    errors.forEach(error => {
+        const liEl = document.createElement("li"); // Skapar ett li för varje specifikt felmeddelande
+        liEl.textContent = error; // Tillger li-elementet texten som genererats inom arrayen av errors
+        errorMsgList.appendChild(liEl); // Lägger till li-elementet inom felmeddelande-listan
+    });
+}
 
+// Skapar och visar felmeddelanden som finns i backend(API), till frontend i DOM
+function showError(err) {
+    const errorMsgList = document.querySelector(".error-message ul");
+    errorMsgList.innerHTML = "";
+    const li = document.createElement("li");
+    li.textContent = err;
+    errorMsgList.appendChild(li);
+}
+
+// Funktion för att visa inloggning fungerade i DOM
+function displaySuccessMsg(successMsg) {
+
+    //Lyckas success med meddelande inom DOM
+    const successMsgList = document.querySelector(".success-message ul");
+    successMsgList.innerHTML = "";
+    const liEl = document.createElement("li");
+    liEl.textContent = successMsg;
+    successMsgList.appendChild(liEl);
+}
+
+function initRegisterForm() {
     // Formuläret med knapp för att registrera en ny användare
     const registerForm = document.getElementById("add-user-form");
     const registerBtn = document.getElementById("add-user-btn");
@@ -50,6 +81,14 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     }
+
+}
+
+function initLoginForm() {
+    // Formuläret med knapp för att logga in en användare
+    const loginForm = document.getElementById("login-user-form");
+    const loginBtn = document.getElementById("login-user-btn");
+
     // Eventlyssnare för inloggningsformuläret
     if (loginForm) {
         loginForm.addEventListener("submit", (event) => {
@@ -78,52 +117,150 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     }
-});
-// Funktion som skriver ut felmeddelanden i DOM
-function displayErrorMsg(errors) {
-    const errorMsgList = document.querySelector(".error-message ul");
-    errorMsgList.innerHTML = "";
-    errors.forEach(error => {
-        const liEl = document.createElement("li"); // Skapar ett li för varje specifikt felmeddelande
-        liEl.textContent = error; // Tillger li-elementet texten som genererats inom arrayen av errors
-        errorMsgList.appendChild(liEl); // Lägger till li-elementet inom felmeddelande-listan
-    });
 }
 
-// Skapar och visar felmeddelanden som finns i backend(API), till frontend i DOM
-function showError(err) {
-    const errorMsgList = document.querySelector(".error-message ul");
-    errorMsgList.innerHTML = "";
-    const li = document.createElement("li");
-    li.textContent = err;
-    errorMsgList.appendChild(li);
-}
+function initNewsForm() {
+    // Formuläret med knapp för att skapa ett nytt nyhetsinlägg
+    const newsForm = document.getElementById("add-news-form");
+    const newsBtn = document.getElementById("add-news-btn");
 
-// Funktion för att visa inloggning fungerade i DOM
-function displaySuccessMsg(successMsg) {
+    // Eventlyssnare för inloggningsformuläret
+    if (newsForm) {
+        newsForm.addEventListener("submit", (event) => {
+            event.preventDefault();
+            let errors = [];
 
-    //Lyckas success med meddelande inom DOM
-    const successMsgList = document.querySelector(".success-message ul");
-    successMsgList.innerHTML = "";
-    const liEl = document.createElement("li");
-    liEl.textContent = successMsg;
-    successMsgList.appendChild(liEl);
-}
-// För att visa ett startmeddelande om det gick att hämta in webbtjänsten
-async function getStartMsg() {
-    try {
-        const response = await fetch(`${url}`, {
-            method: "GET"
+            // Hämtar värden inom inloggningsformuläret
+            const newsHeadline = document.getElementById("news-headline").value.trim();
+            const newsContent = document.getElementById("news-content").value.trim();
+            const newsAuthor = document.getElementById("news-author").value.trim();
+
+            // Specifika felmeddelande för inputs
+            if (newsHeadline === "") errors.push("Du måste fylla i rubrik!");
+            if (newsContent === "") {
+                errors.push("Skriv innehåll för nyheten!")
+            } else if (newsContent.length < 10) {
+                errors.push("Ett nyhetsinlägg behöver vara minst 10 tecken långt!");
+            }
+            if (newsAuthor < 3) errors.push("Du måste fylla i skribent, minst 3 tecken!");
+            // Om felmeddelanden finns visas dem genom funktionen displayErrorMsg
+            if (errors.length > 0) {
+                displayErrorMsg(errors);
+                return; // Stoppar formuläret från att bli submittat
+            } else {
+                createNews(); // Loggar in användaren genom funktionen
+            }
         });
-        const data = await response.json();
-        if (!response.ok) {
-            throw new Error(`Kunde inte hämta webbtjänsten...`);
-        }
-        console.log("Respons från webbtjänst: ", data);
-    } catch (error) {
-        console.error("Gick inte att hämta data från webbtjänsten: ", error)
     }
 }
+
+// För att skapa ett nytt nyhetsinlägg
+async function createNews() {
+    // Hämtar värden inom inloggningsformuläret
+    const headline = document.getElementById("news-headline").value.trim();
+    const content = document.getElementById("news-content").value.trim();
+    const author = document.getElementById("news-author").value.trim();
+
+    const errorMsgList = document.querySelector(".error-message ul"); // Felmeddelanden
+    const successMsgList = document.querySelector(".success-message ul"); // Meddelanden vid lyckat resultat
+    successMsgList.innerHTML = ""; // Tar bort tidigare inloggningsmeddelanden
+
+    const token = localStorage.getItem("nyckel");
+
+    let errors = [];
+    let successMsg = [];
+    try {
+        const response = await fetch(`${url}api/news`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                'Authorization': 'Bearer ' + token
+
+            },
+            body: JSON.stringify({ headline, content, author })
+        });
+        const data = await response.json();
+        // Vid misslyckat resultat
+        if (!response.ok) {
+            document.querySelector(".loading-spinner").classList.add("hidden"); // Visasr ingen laddningsikon
+            //showError(data.error); // Visar felmeddelanden från backend
+            throw Error(`Kunde inte skapa ett nytt inlägg...`);
+            return;
+        }
+        // Vid lyckat resultat
+        document.querySelector(".loading-spinner").classList.remove("hidden"); // Tar bort hidden för att visa laddningsikonen
+        console.log("Nytt inlägg skapat: ", data);
+        errorMsgList.innerHTML = ""; // Raderar eventuella felmeddelanden från tidigare försök
+        successMsg.push("Nytt inlägg skapat!") // Meddelande i DOM att inloggningen gick bra
+        displaySuccessMsg(successMsg); // Visar att inloggningen lyckades i DOM
+        setTimeout(() => {
+            document.querySelector(".loading-spinner").classList.add("hidden"); // Döljer ikonen
+            successMsgList.innerHTML = "";
+            window.location.href = "index.html"; // Skickar användaren till startsidan med nyheterna
+        }, 1000);
+    } catch (error) {
+        document.querySelector(".loading-spinner").classList.add("hidden");
+        console.error("Kunde inte skapa ett nytt inlägg: ", error);
+    }
+}
+
+// Hämtar nyhetsartiklar från databasservern
+async function fetchNews() {
+    const newsContainer = document.getElementById("news-container");
+    if (!newsContainer) return;
+    newsContainer.textContent = "Hämtar nyhetsartiklar från servern..."; // Meddelande innan nyhetsartiklar provat att hämtas in
+
+    try {
+        const response = await fetch(`${url}api/news`);
+        if (!response.ok) {
+            throw new Error(`Fel hos server, kunde inte hämta nyheter: ${response.status}`);
+        }
+        const newsArticles = await response.json();
+        console.log(newsArticles);
+        newsContainer.textContent = ""; // Tömmer tidigare nyhetsartiklar
+        renderNews(newsArticles); // Renderar nyhetsartiklarna
+    } catch (error) {
+        console.error("Det gick inte att hämta nyhetsartiklar från servern: ", error);
+        // Ifall användaren inte är inloggad visas ett felmeddelande
+        newsContainer.textContent = "Kunde inte hämta nyhetsartiklar från servern. Registrera och logga in för att skapa ett nytt inlägg...";
+        if (localStorage.getItem("nyckel")) { // Ifall användaren är inloggad visas ett annat felmeddelande
+            newsContainer.textContent = "Kunde inte hämta nyhetsartiklar från servern. Prova skapa ett nytt inlägg.";
+            newsContainer.style.color = "red";
+        }
+    }
+}
+
+// Skapar nyhetsartiklar från de inhämtade nyhetsinläggen inom databasen
+async function renderNews(newsArticles) {
+    // Renderar inte nyheterna förens besökaren är på den sidan
+    const newsContainer = document.getElementById("news-container");
+    if (!newsContainer) return;
+
+    // Tömmer listan av nyheter innan nya skapas
+    newsContainer.innerHTML = "";
+
+    // Skapar en rubrik
+    let html = `<h2>Nyhetsinlägg för webbplatsen</h2>`
+        // Fyller på med varje nyhetsartikel
+    newsArticles.forEach(article => {
+        html += `
+<article class="news-article">
+    <h3>${article.headline}</h3>
+    <p class="p-content">${article.content}</p>
+    <div class="article-created">
+        <p><span><strong>Skribent:</strong></span> ${article.author}</p>
+        <p><span><strong>Publicerat:</strong></span> ${article.created.formatted}</p>
+    </div>
+    <div class="button-news">
+  <button data-id="${article.id}" class="delete-btn">Radera</button>
+    </div>
+</article>
+`;
+    });
+    // Lägger till alla artiklar inom containern
+    newsContainer.innerHTML = html;
+}
+
 // För att skapa en ny användare
 async function createUser() {
     // Inputs inom formuläret 
@@ -150,7 +287,7 @@ async function createUser() {
         if (!response.ok) {
             document.querySelector(".loading-spinner").classList.add("hidden"); // Visasr ingen laddningsikon
             showError(data.error); // Visar felmeddelanden från backend, ex upptagna användarnamn/email
-            throw new Error(`Kunde inte hämta webbtjänsten...`);
+            throw Error(`Kunde inte skapa en ny användare...`);
             return;
         }
         // Vid lyckat resultat
@@ -200,7 +337,6 @@ async function loginUser() {
             throw new Error("Kunde inte logga in användaren...");
             return;
         }
-        console.log("Användare inloggad: ", data); // Felhantering
         localStorage.setItem("nyckel", token); // Sparar token i localstorage
         errorMsgList.innerHTML = ""; // Raderar eventuella felmeddelanden från tidigare försök
         document.querySelector(".loading-spinner").classList.remove("hidden"); // Tar bort hidden för att visa laddningsikonen
