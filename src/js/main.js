@@ -231,7 +231,7 @@ async function fetchNews() {
     const newsContainer = document.getElementById("news-container");
     if (!newsContainer) return;
     newsContainer.textContent = "Hämtar nyhetsartiklar från servern..."; // Meddelande innan nyhetsartiklar provat att hämtas in
-
+    await wakeRenderServer(); // Väntar på att servern ska vakna
     // Hämtar in nyheter från backend
     try {
         const response = await fetch(`${url}api/news`);
@@ -473,5 +473,15 @@ function displayUserUi() {
         `;
     } else { // Annars tomt
         adminUser.innerHTML = "";
+    }
+}
+
+// Funktion som initieras när sidan laddats in, för att väcka webbtjänsten från viloläge
+async function wakeRenderServer() {
+    try {
+        await fetch(`${url}ping`) // Anropar en endpoint från webbtjänsten
+        console.log("Väcker servern från viloläge");
+    } catch (error) {
+        console.error(error);
     }
 }
