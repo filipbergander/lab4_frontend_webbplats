@@ -10,7 +10,8 @@ export default defineConfig({
             input: {
                 main: resolve(__dirname, "index.html"),
                 add: resolve(__dirname, "login.html"),
-                about: resolve(__dirname, "register.html")
+                about: resolve(__dirname, "register.html"),
+                admin: resolve(__dirname, "admin.html")
             }
         }
     }

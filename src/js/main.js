@@ -4,7 +4,7 @@ import '../sass/main.scss';
 import { checkAuthAccess } from "./authentication/checkAuth.js";
 
 // Global URL till webbtjänsten i backend
-export const url = "http://localhost:3000/";
+export const url = "https://lab4-backend-autentisering.onrender.com/";
 
 const menu = document.querySelector(".menu-list");
 
