@@ -2,9 +2,9 @@
 <html lang="sv">
 
 <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lab 4 | Admin</title>
     <script type="module" src="/src/js/authentication/checkAuth.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700&display=swap" rel="stylesheet">
@@ -30,31 +30,34 @@
         <div id="admin-user"></div>
         <h1>Skapa nyhetsinlägg</h1>
         <form id="add-news-form" method="post">
-            <legend>Skriv inlägg</legend>
-            <div class="error-message">
-                <ul></ul>
-            </div>
-            <div class="success-message">
-                <ul></ul>
-            </div>
-            <div class="loading-spinner hidden"></div>
-            <div class="input-area">
-                <label for="news-headline">Rubrik</label>
-                <input type="text" id="news-headline" name="headline" placeholder="Skriv rubrik">
-            </div>
+            <fieldset>
+                <legend>Skriv inlägg</legend>
+                <div class="error-message">
+                    <ul></ul>
+                </div>
+                <div class="success-message">
+                    <ul></ul>
+                </div>
+                <div class="loading-spinner hidden"></div>
+                <div class="input-area">
+                    <label for="news-headline">Rubrik</label>
+                    <input type="text" id="news-headline" name="headline" placeholder="Skriv rubrik">
+                </div>
 
-            <div class="input-area">
-                <label for="news-content">Innehåll</label>
-                <textarea id="news-content" name="content" rows="4" cols="50" placeholder="Skriv innehåll"></textarea>
-            </div>
+                <div class="input-area">
+                    <label for="news-content">Innehåll</label>
+                    <textarea id="news-content" name="content" rows="4" cols="50" placeholder="Skriv innehåll"></textarea>
+                </div>
 
-            <div class="input-area">
-                <label for="news-author">Skribent</label>
-                <input type="text" id="news-author" name="author" placeholder="Skriv skribent">
-            </div>
-            <button id="add-news-btn" type="submit">Publicera<span id="add-news-icon" class="material-symbols-outlined">
-                    add_ad
-                </span></button>
+                <div class="input-area">
+                    <label for="news-author">Skribent</label>
+                    <input type="text" id="news-author" name="author" placeholder="Skriv skribent">
+                </div>
+                <button id="add-news-btn" type="submit">Publicera<span id="add-news-icon"
+                        class="material-symbols-outlined">
+                        add_ad
+                    </span></button>
+            </fieldset>
         </form>
     </main>
     <footer>Lab 4.2 Backend | Filip 2026</footer>

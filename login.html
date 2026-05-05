@@ -2,9 +2,9 @@
 <html lang="sv">
 
 <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lab 4 | Logga in</title>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined">
@@ -29,30 +29,32 @@
     <main class="form-main">
         <h1>Inloggning till webbplatsen</h1>
         <form id="login-user-form" method="post">
-            <legend>Logga in</legend>
-            <div class="error-message">
-                <ul></ul>
-            </div>
-            <div class="success-message">
-                <ul></ul>
-            </div>
-            <div class="loading-spinner hidden"></div>
-            <!--<div class="input-area">
+            <fieldset>
+                <legend>Logga in</legend>
+                <div class="error-message">
+                    <ul></ul>
+                </div>
+                <div class="success-message">
+                    <ul></ul>
+                </div>
+                <div class="loading-spinner hidden"></div>
+                <!--<div class="input-area">
                 <label for="login-username">Användarnamn</label>
                 <input type="text" id="login-username" name="username" placeholder="Skriv användarnamn">
             </div>-->
 
-            <div class="input-area">
-                <label for="login-email">Din email</label>
-                <input type="text" id="login-email" name="email" placeholder="Skriv email">
-            </div>
+                <div class="input-area">
+                    <label for="login-email">Din email</label>
+                    <input type="text" id="login-email" name="email" placeholder="Skriv email">
+                </div>
 
-            <div class="input-area">
-                <label for="login-password">Lösenord</label>
-                <input type="password" id="login-password" name="password" placeholder="Skriv lösenord">
-            </div>
-            <button id="login-user-btn" type="submit">Enter<span id="login-user-icon"
+                <div class="input-area">
+                    <label for="login-password">Lösenord</label>
+                    <input type="password" id="login-password" name="password" placeholder="Skriv lösenord">
+                </div>
+                <button id="login-user-btn" type="submit">Enter<span id="login-user-icon"
                     class="material-symbols-outlined">login</span></button>
+            </fieldset>
         </form>
     </main>
     <footer>Lab 4.2 Backend | Filip 2026</footer>
