@@ -23,13 +23,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Känner av och lyssnar på om man klickat på knappen med klassen delete-btn
     document.addEventListener("click", async(event) => {
-        event.preventDefault();
         if (event.target.classList.contains("delete-btn")) {
+            event.preventDefault();
             const btnId = event.target.dataset.id; // Hämtar det skapade dataset-id som respektive knapp fått
             // Confirm
             if (!confirm("Vill du verkligen radera inlägget?")) {
                 return // Annars return vid -> avbryt
             }
+            event.target.closest("article").remove(); // Tar bort article där knappen finns inom
             // Deletar ett inlägg genom funktionen om man klickat ok på att radera
             await deleteNews(btnId);
         }
@@ -311,8 +312,6 @@ async function deleteNews(id) {
             throw Error(`Kunde inte radera inlägget...`)
             return;
         }
-        // Hämtar inläggen från databasen igen efter att ett inlägg tagits bort
-        fetchNews();
     } catch (error) {
         console.error("Fel när inlägget skulle raderas: ", error);
     }
