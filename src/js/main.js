@@ -15,7 +15,12 @@ document.addEventListener("DOMContentLoaded", () => {
     initRegisterForm(); // Lyssnar på ändringar i formuläret för att registrera en ny användare
     initLoginForm(); // Lyssnar på ändringar i formuläret för att logga in en ny användare
     initNewsForm(); // Lyssnar på ändringar i formuläret för att skapa ett nyhetsinlägg
-    displayUserUi();
+
+    // Om användaren befinner sig på admin-sidan och har loggat in visas deras användarnamn i UI
+    if (localStorage.getItem("nyckel") && window.location.pathname.endsWith("admin.html")) {
+        displayUserUi();
+    }
+
     // Känner av och lyssnar på om man klickat på knappen med klassen delete-btn
     document.addEventListener("click", async(event) => {
         if (event.target.classList.contains("delete-btn")) {
