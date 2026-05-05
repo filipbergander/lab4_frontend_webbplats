@@ -30,34 +30,31 @@
     <main class="form-main">
         <h1>Registrera ny användare</h1>
         <form id="add-user-form" method="post">
-            <fieldset>
-                <legend>Registrera</legend>
-                <div class="error-message">
-                    <ul></ul>
-                </div>
-                <div class="success-message">
-                    <ul></ul>
-                </div>
-                <div class="loading-spinner hidden"></div>
-                <div class="input-area">
-                    <label for="register-username">Användarnamn</label>
-                    <input type="text" id="register-username" name="username" placeholder="Skriv användarnamn">
-                </div>
+            <h2>Registrera</h2>
+            <div class="error-message">
+                <ul></ul>
+            </div>
+            <div class="success-message">
+                <ul></ul>
+            </div>
+            <div class="loading-spinner hidden"></div>
+            <div class="input-area">
+                <label for="register-username">Användarnamn</label>
+                <input type="text" id="register-username" name="username" placeholder="Skriv användarnamn">
+            </div>
 
-                <div class="input-area">
-                    <label for="register-email">Din email</label>
-                    <input type="text" id="register-email" name="email" placeholder="Skriv email">
-                </div>
+            <div class="input-area">
+                <label for="register-email">Din email</label>
+                <input type="text" id="register-email" name="email" placeholder="Skriv email">
+            </div>
 
-                <div class="input-area">
-                    <label for="register-password">Lösenord</label>
-                    <input type="password" id="register-password" name="password" placeholder="Skriv lösenord">
-                </div>
-                <button id="add-user-btn" type="submit">Lägg till<span id="add-user-icon"
-                        class="material-symbols-outlined">
-                        person_add
-                    </span></button>
-            </fieldset>
+            <div class="input-area">
+                <label for="register-password">Lösenord</label>
+                <input type="password" id="register-password" name="password" placeholder="Skriv lösenord">
+            </div>
+            <button id="add-user-btn" type="submit">Lägg till<span id="add-user-icon" class="material-symbols-outlined">
+                    person_add
+                </span></button>
         </form>
     </main>
     <footer>Lab 4.2 Backend | Filip 2026</footer>

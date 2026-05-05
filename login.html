@@ -29,32 +29,29 @@
     <main class="form-main">
         <h1>Inloggning till webbplatsen</h1>
         <form id="login-user-form" method="post">
-            <fieldset>
-                <legend>Logga in</legend>
-                <div class="error-message">
-                    <ul></ul>
-                </div>
-                <div class="success-message">
-                    <ul></ul>
-                </div>
-                <div class="loading-spinner hidden"></div>
-                <!--<div class="input-area">
+            <h2>Logga in</h2>
+            <div class="error-message">
+                <ul></ul>
+            </div>
+            <div class="success-message">
+                <ul></ul>
+            </div>
+            <div class="loading-spinner hidden"></div>
+            <!--<div class="input-area">
                 <label for="login-username">Användarnamn</label>
                 <input type="text" id="login-username" name="username" placeholder="Skriv användarnamn">
             </div>-->
+            <div class="input-area">
+                <label for="login-email">Din email</label>
+                <input type="text" id="login-email" name="email" placeholder="Skriv email">
+            </div>
 
-                <div class="input-area">
-                    <label for="login-email">Din email</label>
-                    <input type="text" id="login-email" name="email" placeholder="Skriv email">
-                </div>
-
-                <div class="input-area">
-                    <label for="login-password">Lösenord</label>
-                    <input type="password" id="login-password" name="password" placeholder="Skriv lösenord">
-                </div>
-                <button id="login-user-btn" type="submit">Enter<span id="login-user-icon"
+            <div class="input-area">
+                <label for="login-password">Lösenord</label>
+                <input type="password" id="login-password" name="password" placeholder="Skriv lösenord">
+            </div>
+            <button id="login-user-btn" type="submit">Enter<span id="login-user-icon"
                     class="material-symbols-outlined">login</span></button>
-            </fieldset>
         </form>
     </main>
     <footer>Lab 4.2 Backend | Filip 2026</footer>
