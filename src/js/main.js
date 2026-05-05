@@ -347,7 +347,6 @@ async function createUser() {
         errorMsgList.innerHTML = ""; // Raderar eventuella felmeddelanden från tidigare försök
         successMsg.push("Ny användare skapas!") // Meddelande i DOM att inloggningen gick bra
         displaySuccessMsg(successMsg); // Visar att inloggningen lyckades i DOM
-        displayUserUi(data);
         setTimeout(() => {
             document.querySelector(".loading-spinner").classList.add("hidden"); // Döljer ikonen
             successMsgList.innerHTML = "";
