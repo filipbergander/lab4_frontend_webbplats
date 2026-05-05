@@ -47,6 +47,7 @@
 .delete-btn {
     @include button($btn-color-red, $color-text);
     margin-left: auto;
+    padding: 0.5em;
     &:hover {
         background-color: #fa8e00;
     }

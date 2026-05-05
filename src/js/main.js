@@ -9,12 +9,25 @@ export const url = "http://localhost:3000/";
 const menu = document.querySelector(".menu-list");
 
 document.addEventListener("DOMContentLoaded", () => {
-    fetchNews();
-    changeLoginMenu();
-    addPageHighlight();
-    initRegisterForm();
-    initLoginForm();
-    initNewsForm();
+    fetchNews(); // Hämtar nyheter från backend
+    changeLoginMenu(); // Ändrar navigeringsmenyn beroende på om användaren är inloggad eller inte
+    addPageHighlight(); // Skiftar klass för länkar i navigeringsmenyn berorende på vilken sida man befinner sig på
+    initRegisterForm(); // Lyssnar på ändringar i formuläret för att registrera en ny användare
+    initLoginForm(); // Lyssnar på ändringar i formuläret för att logga in en ny användare
+    initNewsForm(); // Lyssnar på ändringar i formuläret för att skapa ett nyhetsinlägg
+
+    // Känner av och lyssnar på om man klickat på knappen med klassen delete-btn
+    document.addEventListener("click", async(event) => {
+        if (event.target.classList.contains("delete-btn")) {
+            const btnId = event.target.dataset.id; // Hämtar det skapade dataset-id som respektive knapp fått
+            // Confirm
+            if (!confirm("Vill du verkligen radera inlägget?")) {
+                return // Annars return vid -> avbryt
+            }
+            // Deletar ett inlägg genom funktionen om man klickat ok på att radera
+            await deleteNews(btnId);
+        }
+    });
 });
 // Funktion som skriver ut felmeddelanden i DOM
 function displayErrorMsg(errors) {
@@ -47,6 +60,7 @@ function displaySuccessMsg(successMsg) {
     successMsgList.appendChild(liEl);
 }
 
+// Lyssnar på ändringar som görs i formuläret, visar felmeddelanden i DOM och anropar funktionen för att skapa en ny användare
 function initRegisterForm() {
     // Formuläret med knapp för att registrera en ny användare
     const registerForm = document.getElementById("add-user-form");
@@ -83,7 +97,7 @@ function initRegisterForm() {
     }
 
 }
-
+// Lyssnar på ändringar som görs i formuläret, visar felmeddelanden i DOM och anropar funktionen för att logga in en användare
 function initLoginForm() {
     // Formuläret med knapp för att logga in en användare
     const loginForm = document.getElementById("login-user-form");
@@ -118,7 +132,7 @@ function initLoginForm() {
         });
     }
 }
-
+// Lyssnar på ändringar som görs i formuläret, visar felmeddelanden i DOM och anropar funktionen för att skapa ett nytt inlägg
 function initNewsForm() {
     // Formuläret med knapp för att skapa ett nytt nyhetsinlägg
     const newsForm = document.getElementById("add-news-form");
@@ -143,12 +157,13 @@ function initNewsForm() {
                 errors.push("Ett nyhetsinlägg behöver vara minst 10 tecken långt!");
             }
             if (newsAuthor < 3) errors.push("Du måste fylla i skribent, minst 3 tecken!");
+
             // Om felmeddelanden finns visas dem genom funktionen displayErrorMsg
             if (errors.length > 0) {
                 displayErrorMsg(errors);
                 return; // Stoppar formuläret från att bli submittat
             } else {
-                createNews(); // Loggar in användaren genom funktionen
+                createNews(); // Skapar ett nytt nyhetsinlägg
             }
         });
     }
@@ -165,10 +180,11 @@ async function createNews() {
     const successMsgList = document.querySelector(".success-message ul"); // Meddelanden vid lyckat resultat
     successMsgList.innerHTML = ""; // Tar bort tidigare inloggningsmeddelanden
 
-    const token = localStorage.getItem("nyckel");
+    const token = localStorage.getItem("nyckel"); // Finns token?
 
     let errors = [];
     let successMsg = [];
+    // Skyddad route som anropas tillsammans med bearer + token
     try {
         const response = await fetch(`${url}api/news`, {
             method: "POST",
@@ -189,13 +205,12 @@ async function createNews() {
         }
         // Vid lyckat resultat
         document.querySelector(".loading-spinner").classList.remove("hidden"); // Tar bort hidden för att visa laddningsikonen
-        console.log("Nytt inlägg skapat: ", data);
         errorMsgList.innerHTML = ""; // Raderar eventuella felmeddelanden från tidigare försök
-        successMsg.push("Nytt inlägg skapat!") // Meddelande i DOM att inloggningen gick bra
-        displaySuccessMsg(successMsg); // Visar att inloggningen lyckades i DOM
+        successMsg.push("Inlägg skapat, publiceras!") // Meddelande för lyckad publicering av inlägg
+        displaySuccessMsg(successMsg); // Visar meddelandet i DOM
         setTimeout(() => {
             document.querySelector(".loading-spinner").classList.add("hidden"); // Döljer ikonen
-            successMsgList.innerHTML = "";
+            successMsgList.innerHTML = ""; // Tar bort det lyckade meddelandet i DOM
             window.location.href = "index.html"; // Skickar användaren till startsidan med nyheterna
         }, 1000);
     } catch (error) {
@@ -210,13 +225,13 @@ async function fetchNews() {
     if (!newsContainer) return;
     newsContainer.textContent = "Hämtar nyhetsartiklar från servern..."; // Meddelande innan nyhetsartiklar provat att hämtas in
 
+    // Hämtar in nyheter från backend
     try {
         const response = await fetch(`${url}api/news`);
         if (!response.ok) {
             throw new Error(`Fel hos server, kunde inte hämta nyheter: ${response.status}`);
         }
         const newsArticles = await response.json();
-        console.log(newsArticles);
         newsContainer.textContent = ""; // Tömmer tidigare nyhetsartiklar
         renderNews(newsArticles); // Renderar nyhetsartiklarna
     } catch (error) {
@@ -225,7 +240,7 @@ async function fetchNews() {
         newsContainer.textContent = "Kunde inte hämta nyhetsartiklar från servern. Registrera och logga in för att skapa ett nytt inlägg...";
         if (localStorage.getItem("nyckel")) { // Ifall användaren är inloggad visas ett annat felmeddelande
             newsContainer.textContent = "Kunde inte hämta nyhetsartiklar från servern. Prova skapa ett nytt inlägg.";
-            newsContainer.style.color = "red";
+            newsContainer.style.color = "blue";
         }
     }
 }
@@ -239,6 +254,9 @@ async function renderNews(newsArticles) {
     // Tömmer listan av nyheter innan nya skapas
     newsContainer.innerHTML = "";
 
+    const token = localStorage.getItem("nyckel");
+    const loggedInTrue = !!token;
+
     // Skapar en rubrik
     let html = `<h2>Nyhetsinlägg för webbplatsen</h2>`
         // Fyller på med varje nyhetsartikel
@@ -249,16 +267,44 @@ async function renderNews(newsArticles) {
     <p class="p-content">${article.content}</p>
     <div class="article-created">
         <p><span><strong>Skribent:</strong></span> ${article.author}</p>
-        <p><span><strong>Publicerat:</strong></span> ${article.created.formatted}</p>
+        <p><span><strong>Publicerat:</strong></span> ${article.created.date} kl: ${article.created.time}</p>
     </div>
     <div class="button-news">
-  <button data-id="${article.id}" class="delete-btn">Radera</button>
+`;
+        // Stämmer det att man är inloggad? Lägger isåfall på radera-knapp inom inläggen
+        if (loggedInTrue) {
+            html += `<button data-id="${article.id}" class="delete-btn">Radera<span class="material-symbols-outlined">delete</span></button>`
+        }
+        // Oavsett om man är inloggad eller inte avslutas hela loopen
+        html += `
     </div>
 </article>
 `;
     });
     // Lägger till alla artiklar inom containern
     newsContainer.innerHTML = html;
+}
+
+// Raderar ett nyhetsinlägg genom specifikt id på knapp
+async function deleteNews(id) {
+    const token = localStorage.getItem("nyckel"); // Token används för den skyddade routen
+    try { // Försöker radera genom ID
+        const response = await fetch(`${url}api/news/${id}`, {
+            method: "DELETE",
+            headers: {
+                'Authorization': 'Bearer ' + token
+            }
+        });
+        const data = await response.json();
+        if (!response.ok) {
+            throw Error(`Kunde inte radera inlägget...`)
+            return;
+        }
+        // Hämtar inläggen från databasen igen efter att ett inlägg tagits bort
+        fetchNews();
+    } catch (error) {
+        console.error("Fel när inlägget skulle raderas: ", error);
+    }
 }
 
 // För att skapa en ny användare
@@ -274,6 +320,7 @@ async function createUser() {
 
     let errors = [];
     let successMsg = [];
+    // Skapar en ny användare genom routen i backend
     try {
         const response = await fetch(`${url}api/register`, {
             method: "POST",
@@ -292,7 +339,6 @@ async function createUser() {
         }
         // Vid lyckat resultat
         document.querySelector(".loading-spinner").classList.remove("hidden"); // Tar bort hidden för att visa laddningsikonen
-        console.log("Ny användare skapad: ", data);
         errorMsgList.innerHTML = ""; // Raderar eventuella felmeddelanden från tidigare försök
         successMsg.push("Ny användare skapas!") // Meddelande i DOM att inloggningen gick bra
         displaySuccessMsg(successMsg); // Visar att inloggningen lyckades i DOM
