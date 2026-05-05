@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
     initRegisterForm(); // Lyssnar på ändringar i formuläret för att registrera en ny användare
     initLoginForm(); // Lyssnar på ändringar i formuläret för att logga in en ny användare
     initNewsForm(); // Lyssnar på ändringar i formuläret för att skapa ett nyhetsinlägg
-
+    displayUserUi();
     // Känner av och lyssnar på om man klickat på knappen med klassen delete-btn
     document.addEventListener("click", async(event) => {
         if (event.target.classList.contains("delete-btn")) {
@@ -342,6 +342,7 @@ async function createUser() {
         errorMsgList.innerHTML = ""; // Raderar eventuella felmeddelanden från tidigare försök
         successMsg.push("Ny användare skapas!") // Meddelande i DOM att inloggningen gick bra
         displaySuccessMsg(successMsg); // Visar att inloggningen lyckades i DOM
+        displayUserUi(data);
         setTimeout(() => {
             document.querySelector(".loading-spinner").classList.add("hidden"); // Döljer ikonen
             successMsgList.innerHTML = "";
@@ -377,6 +378,7 @@ async function loginUser() {
 
         const data = await response.json(); // Väntar på responsen tillbaka
         const token = data.response.token; // Token utifrån data
+        const username = data.response.user.username; // Användarnamnet från backend
         // Om token inte finns inom responsen så går inte inloggningen igenom
         if (!response.ok || !token) {
             document.querySelector(".loading-spinner").classList.add("hidden"); // Döljer ikonen vid misslyckad respons
@@ -389,7 +391,7 @@ async function loginUser() {
         // Visar ett felmeddelande i DOM vid lyckad inloggning
         successMsg.push("Inloggning lyckades!") // Meddelande i DOM att inloggningen gick bra
         displaySuccessMsg(successMsg); // Visar att inloggningen lyckades i DOM
-
+        localStorage.setItem("username", username); // Sparar användarnamnet i localstorage
         // Liten delay innan redirect för att hinna spara token i localstorage och visa laddningsikon en kort stund
         setTimeout(() => {
             document.querySelector(".loading-spinner").classList.add("hidden"); // Döljer ikonen efter redirect
@@ -428,6 +430,7 @@ function changeLoginMenu() {
     if (logoutBtn) {
         logoutBtn.addEventListener("click", () => {
             localStorage.removeItem("nyckel"); // Tar bort key från localstorage
+            localStorage.removeItem("username"); // Tar bort användarnamn från localstorage
             window.location.href = "login.html"; // Navigerar användaren till login-sidan
         });
     }
@@ -446,4 +449,20 @@ function addPageHighlight() {
             link.classList.add("current-page"); // Lägger på klassen inom länken
         }
     });
+}
+// Lägger till användarnamn inom UI för inläggs-sidan
+function displayUserUi() {
+
+    const adminUser = document.getElementById("admin-user"); // Elemenent inom HTML
+    const usernameKey = localStorage.getItem("username"); // Hämtar användarnamn
+    // Om det finns användarnamn sparat
+    if (localStorage.getItem("nyckel")) {
+        // Struktur med meddelande
+        adminUser.innerHTML = `
+        <p> Inloggad som administratör, <span class="user-span">${usernameKey} </span></p>
+        <p>Vad vill du skapa idag?</p>
+        `;
+    } else { // Annars tomt
+        adminUser.innerHTML = "";
+    }
 }
