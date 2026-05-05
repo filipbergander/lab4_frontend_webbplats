@@ -23,6 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Känner av och lyssnar på om man klickat på knappen med klassen delete-btn
     document.addEventListener("click", async(event) => {
+        event.preventDefault();
         if (event.target.classList.contains("delete-btn")) {
             const btnId = event.target.dataset.id; // Hämtar det skapade dataset-id som respektive knapp fått
             // Confirm
@@ -266,19 +267,24 @@ async function renderNews(newsArticles) {
     let html = `<h2>Nyhetsinlägg för webbplatsen</h2>`
         // Fyller på med varje nyhetsartikel
     newsArticles.forEach(article => {
+        const datePublish = new Date(article.created.raw);
+        const swedishTime = datePublish.toLocaleTimeString("se-SV", {
+            hour: "2-digit",
+            minute: "2-digit"
+        });
         html += `
 <article class="news-article">
     <h3>${article.headline}</h3>
     <p class="p-content">${article.content}</p>
     <div class="article-created">
         <p><span><strong>Skribent:</strong></span> ${article.author}</p>
-        <p><span><strong>Publicerat:</strong></span> ${article.created.date} kl: ${article.created.time}</p>
+        <p><span><strong>Publicerat:</strong></span> ${article.created.date} kl: ${swedishTime}</p>
     </div>
     <div class="button-news">
 `;
         // Stämmer det att man är inloggad? Lägger isåfall på radera-knapp inom inläggen
         if (loggedInTrue) {
-            html += `<button data-id="${article.id}" class="delete-btn">Radera<span class="material-symbols-outlined">delete</span></button>`
+            html += `<button type="button" data-id="${article.id}" class="delete-btn">Radera<span class="material-symbols-outlined">delete</span></button>`
         }
         // Oavsett om man är inloggad eller inte avslutas hela loopen
         html += `
