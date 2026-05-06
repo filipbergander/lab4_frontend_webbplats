@@ -35,9 +35,10 @@ main {
         line-height: 1.4;
     }
     ul {
-        list-style-position: inside;
+        margin-left: 1em;
     }
     li {
+        margin-bottom: 0.4em;
         text-align: left;
     }
 }

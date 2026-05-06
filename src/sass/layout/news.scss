@@ -10,6 +10,13 @@
     }
 }
 
+.index-page {
+    h1 {
+        margin-bottom: 0.5em;
+        line-height: 1.2;
+    }
+}
+
 .news-article {
     display: flex;
     flex-direction: column;
@@ -38,6 +45,7 @@
         word-wrap: break-word;
         max-width: 65ch;
         white-space: pre-wrap;
+        line-height: 1.1;
     }
     .article-created {
         margin-top: 1em;
