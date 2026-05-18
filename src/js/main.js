@@ -275,10 +275,10 @@ async function renderNews(newsArticles) {
         });
         html += `
 <article class="news-article">
-    <h3>${article.headline}</h3>
-    <p class="p-content">${article.content}</p>
+    <h3>${secureHtml(article.headline)}</h3>
+    <p class="p-content">${secureHtml(article.content)}</p>
     <div class="article-created">
-        <p><span><strong>Skribent:</strong></span> ${article.author}</p>
+        <p><span><strong>Skribent:</strong></span> ${secureHtml(article.author)}</p>
         <p><span><strong>Publicerat:</strong></span> ${article.created.date} kl: ${swedishTime}</p>
     </div>
     <div class="button-news">
@@ -295,6 +295,15 @@ async function renderNews(newsArticles) {
     });
     // Lägger till alla artiklar inom containern
     newsContainer.innerHTML = html;
+}
+
+function secureHtml(string) {
+    return string
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
 }
 
 // Raderar ett nyhetsinlägg genom specifikt id på knapp
